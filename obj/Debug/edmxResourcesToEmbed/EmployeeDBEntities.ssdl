@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ClipperDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EmployeeRoles">
+    <Key>
+      <PropertyRef Name="Roleid" />
+    </Key>
+    <Property Name="Roleid" Type="int" Nullable="false" />
+    <Property Name="Role" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="SalaryRate" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BasicSalary" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Allowance" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="EmployeeWages">
+    <Key>
+      <PropertyRef Name="WagesID" />
+    </Key>
+    <Property Name="EmpName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Role" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="StartTime" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="FinishTime" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="TotalHoursWorked" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="TotalSalaryToday" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="IsPaid" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AmountDue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="WagesID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="ClipperDBModelStoreContainer">
+    <EntitySet Name="EmployeeRoles" EntityType="Self.EmployeeRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeeWages" EntityType="Self.EmployeeWages" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

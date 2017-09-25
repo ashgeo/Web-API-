@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body style="padding-top:20px">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="well">
+            <form id="loginForm" method="post" class="form-horizontal">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="success">
+                            <td colspan="4">
+                                Add New Employee
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EmpID</td>
+                            <td>
+                                <input type="text" id="empID"  placeholder="Employee ID" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>First Name</td>
+                            <td>
+                                <input type="text" id="firstName" placeholder="First Name" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td>
+                                <input type="text" id="lastName" placeholder="Last Name" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Role</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button id="role" class="btn btn-group-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Select Position
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Manager</a></li>
+                                        <li><a href="#">Cook</a></li>
+                                        <li><a href="#">Chef</a></li>
+                                        <li> <a href="#">Waitress</a></li>
+                                        <li><a href="#">Kitchen Hand</a></li>
+                                    </ul>
+                                </div>
+                                <!--<input type="text" id="role" placeholder="Role" />-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <input type="text" id="phone" placeholder="Phone" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+                                <input type="text" id="email" placeholder="Email" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>User Name</td>
+                            <td>
+                                <input type="text" id="username" placeholder="UserName" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td>
+                                <input type="password" id="password" placeholder="Password" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Confirm Password</td>
+                            <td>
+                                <input type="password" id="confirmpassword" placeholder="Confirm Password" />
+                            </td>
+                        </tr>
+
+                        <tr class="success">
+                            <td colspan="2">
+                                <input type="button" id="btnRegister" class="btn-success" value="Register" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+                <div class="modal fade" tabindex="-1" id="successModal" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title"> Success</h4>
+                            </div>
+                            <div class=" modal-body">
+                                <form>
+                                    <h4> Registration Successful</h4>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-success">
+                                    CLose
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divError" class="alert alert-danger collapse">
+                    <a id="linkClose" class="close" href="#">&times;</a>
+                    <div id="divErrorText"></div>
+                </div>
+</div>
+        </div>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var selectedRole = "";
+        $(document).ready(function () {
+            $('#linkClose').click(function () {
+                $('#divError').hide('fade');
+            });
+            $(".dropdown-menu li a").click(function () {
+
+                selectedRole = $(this).text();    
+                $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+            });
+            $('#btnRegister').click(function () {
+                $.ajax({
+                    url: '/api/Employees/Register',
+                    method: 'POST',
+                    data: {
+                        EmpID: $('#empID').val(),
+                        FirstName: $('#firstName').val(),
+                        LastName: $('#lastName').val(),
+                        EmpRole: selectedRole,
+                        Phone: $('#phone').val(),
+                        Email: $('#email').val(),
+                        UserName: $('#username').val(),
+                        Password: $('#password').val(),
+                        
+                    },
+                    success: function () {
+                        $('#successModal').modal('show');
+                    },
+                    error: function (jqXHR) {
+                        jsonValue = jQuery.parseJSON(jqXHR.status);
+                        $('#divErrorText').text(jqXHR.responseText);
+                        $('#divError').show('fade');
+                    }
+                });                
+            });
+        });
+    </script>
+</body>
+</html>

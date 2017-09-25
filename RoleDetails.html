@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body style="padding-top:20px">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="well">
+            <form id="loginForm" method="post" class="form-horizontal">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="success">
+                            <td colspan="4">
+                                Add Salary Details Employee
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>                     
+
+                        <tr>
+                            <td>Role Name</td>
+                            <td>
+                                <input type="text" id="txtRoleName" placeholder="Role" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Basic Salary Rate</td>
+                            <td>
+                                <input type="text" id="txtBasicSalary" placeholder="0.0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Allowance</td>
+                            <td>
+                                <input type="text" id="txtAllowance" placeholder="0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Weekdays Rate</td>
+                            <td>
+                                <input type="text" id="txtWeekdaysRate" placeholder="0.0" />
+                            </td>
+                        </tr>                     
+                        <tr>
+                            <td>SalaryRate Saturaday</td>
+                            <td>
+                                <input type="text" id="txtSaturdayRate" placeholder="0.0" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>SalaryRate Sunday</td>
+                            <td>
+                                <input type="text" id="txtSundayRate" placeholder="0.0" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>SalaryRate public Holiday</td>
+                            <td>
+                                <input type="text" id="txtPHRate" placeholder="0.0" />
+                            </td>
+                        </tr>                     
+
+                        <tr class="success">
+                            <td colspan="2">
+                                <input type="button" id="btnRegister" class="btn-success" value="Register" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="modal fade" tabindex="-1" id="successModal" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                &times;
+                            </button>
+                            <h4 class="modal-title"> Success</h4>
+                        </div>
+                        <div class=" modal-body">
+                            <form>
+                                <h4> Registration Successful</h4>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-success">
+                                CLose
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="divError" class="alert alert-danger collapse">
+                <a id="linkClose" class="close" href="#">&times;</a>
+                <div id="divErrorText"></div>
+            </div>
+        </div>
+    </div>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var selectedRole = "";
+        $(document).ready(function () {
+            $('#linkClose').click(function () {
+                $('#divError').hide('fade');
+            });
+            $(".dropdown-menu li a").click(function () {
+
+                selectedRole = $(this).text();
+                $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+                $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+            });
+            $('#btnRegister').click(function () {
+                //var salary = { BasicSalary: "HP", Allowance: "8", SalaryRateMF: "5", SalaryRateSat: "3", SalaryRateSun: "3", SalaryRatePH: "2" };
+                //var Role = { RoleID: "1", RoleNmae: "dfdsfsdfs0" };
+                //var myData = {};
+                //myData.salaryData = salary;
+                //myData.roleData = Role;
+                //Role: JSON.stringify(myData)
+
+                $.ajax({
+                    url: '/api/Roles/Register',
+                    method: 'POST',
+                    data: {
+                        RoleID: "",
+                        RoleName: $('#txtRoleName').val(),
+                        Salary: {
+                            RoleID: "",
+                            BasicSalary: $('#txtBasicSalary').val(),
+                            Allowance: $('#txtAllowance').val(),
+                            SalaryRateMF: $('#txtWeekdaysRate').val(),
+                            SalaryRateSat: $('#txtSaturdayRate').val(),
+                            SalaryRateSun: $('#txtSundayRate').val(),
+                            SalaryRatePH: $('#txtPHRate').val()
+                        }       
+                      
+                    },
+                    success: function () {
+                        $('#successModal').modal('show');
+                    },
+                    error: function (jqXHR) {
+                        jsonValue = jQuery.parseJSON(jqXHR.status);
+                        $('#divErrorText').text(jqXHR.responseText);
+                        $('#divError').show('fade');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

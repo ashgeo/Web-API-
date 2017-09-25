@@ -1,0 +1,80 @@
+﻿<html>
+<head>
+    <title>Supplier Record</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="col-md-10 col-md-offset-1">
+        <div class="well">
+            <div class="modal-header">
+                <input type="text" id="search" placeholder="  live search" />
+
+            </div>
+            <h4>Supplier</h4>
+            <table class="table table-bordered" id="suppliers" cellpadding="2" cellspacing="2" border="1" width="400px">
+                <tr class="success">
+                    <td>Supplier ID</td>
+                    <td>SupplierName</td>
+                    <td>Date</td>
+                    <td>Total Amount</td>
+                    <td>Amount Paid</td>
+                    <td>Amount Due</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+    </div>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var uri = 'api/Supplier';
+        $(document).ready(function () {
+            $.getJSON(uri)
+                .done(function (data) {
+                    $.each(data, function (key, item) {
+                        $('#suppliers').append("<tr><td>" + item.SupplierID + "</td>" + "<td>" + item.SupplierName + "</td>" + "<td>" + item.Date + "</td>" + "<td>" + item.TotalAmount + "</td>" + "<td>" + item.AmountPaid + "</td>" + "<td>" + item.AmountDue + "</td > </tr>");
+                    });
+                });
+        });
+
+        function formatItem(item) {
+            return item.FirstName + '-' + item.EmpRole;
+        }
+        //Not using this function
+        //function find() {
+        //    var id = $('#empIDText').val();
+        //    $.getJSON(uri + '/' + id)
+        //        .done(function (data) {
+        //            $('#st').text(formatItem(data));
+        //        })
+        //        .fail(function (jqXHR, textStatus, err) {
+        //            $('#employees').text('error' + err);
+        //        })
+        //}
+
+        //Search
+        $("#search").on("keyup", function () {
+            var value = $(this).val();
+
+            $("table tr").each(function (index) {
+                if (index !== 0) {
+
+                    $row = $(this);
+
+                    var id = $row.find("td:first").text();
+
+                    if (id.indexOf(value) !== 0) {
+                        $row.hide();
+                    }
+                    else {
+                        $row.show();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>  
